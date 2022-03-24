@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<!-- Fig. 16.5: SwitchContent.html -->
+<!-- Asynchronously display content without reloading the page. -->
+<html>
+<head>
+   <meta charset = "utf-8">
+   <style type = "text/css">
+      .box { border: 1px solid black; padding: 10px }
+   </style>
+   <title>Switch Content Asynchronously</title>
+   <script>
+      var asyncRequest; // variable to hold XMLHttpRequest object
+
+      // set up event handlers
+      function registerListeners()
+      {
+         var img;
+         img = document.getElementById( "baseball" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "./infoFiles/baseball.html" ); }, false ); 
+         img.addEventListener( "mouseout", clearContent, false ); 
+         img = document.getElementById( "basket" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "./infoFiles/basket.html" ); }, false ); 
+         img.addEventListener( "mouseout", clearContent, false ); 
+         img = document.getElementById( "hockey" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "./infoFiles/hockey.html" ); }, false ); 
+         img.addEventListener( "mouseout", clearContent, false ); 
+         img = document.getElementById( "soccer" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "./infoFiles/soccer.html" ); }, false ); 
+         img.addEventListener( "mouseout", clearContent, false ); 
+         img = document.getElementById( "tenis" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "./infoFiles/tennis.html" ); }, false );
+         img.addEventListener( "mouseout", clearContent, false ); 
+         img = document.getElementById( "cricket" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "./infoFiles/cricket.html" ); }, false ); 
+         img.addEventListener( "mouseout", clearContent, false ); 
+      } // end function registerListeners
+
+      // set up and send the asynchronous request.
+      function getContent( url )
+      {
+         // attempt to create XMLHttpRequest object and make the request
+         try
+         {
+            asyncRequest = new XMLHttpRequest(); // create request object
+
+            // register event handler
+            asyncRequest.addEventListener(
+               "readystatechange", stateChange, false); 
+            asyncRequest.open( "GET", url, true ); // prepare the request
+            asyncRequest.send( null ); // send the request
+         } // end try
+         catch ( exception )
+         {
+            alert( "Request failed." );
+         } // end catch
+      } // end function getContent
+      
+      // displays the response data on the page
+      function stateChange()
+      {
+         if ( asyncRequest.readyState == 4 && asyncRequest.status == 200 )
+         {
+            document.getElementById( "contentArea" ).innerHTML = 
+               asyncRequest.responseText; // places text in contentArea
+         } // end if
+      } // end function stateChange
+
+      // clear the content of the box
+      function clearContent()
+      {
+         document.getElementById( "contentArea" ).innerHTML = "";
+      } // end function clearContent
+
+      window.addEventListener( "load", registerListeners, false );
+   </script>
+</head>
+<body>
+   <h1>Mouse over a book for more information.</h1>
+   <img id = "basket" alt = "Basketball"
+      src = "https://en.wikipedia.org/wiki/Basketball_(ball)#/media/File:Basketball.png">
+   <img id = "cricket" alt = "cicket"
+      src = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Ian_Bell_batting_2013.jpg/360px-Ian_Bell_batting_2013.jpg">
+   <img id = "baseball" alt = "baseball"
+      src = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Baseball_pitch_release.jpg/470px-Baseball_pitch_release.jpg">
+   <img id = "hockey" alt = "hockey"
+      src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/American_Hockey_League_ERI_5728_(5528017555).jpg/440px-American_Hockey_League_ERI_5728_(5528017555).jpg">
+   <img id = "tenis" alt = "tennis" 
+      src = "https://en.wikipedia.org/wiki/Tennis#/media/File:Rafael_Nadal_2011_Wimbledon_forehand.jpg">
+   <img id = "soccer" alt = "soccer"
+      src = "https://en.wikipedia.org/wiki/Football#/media/File:Football_iu_1996.jpg">
+   <div class = "box" id = "contentArea"></div>
+</body>
+</html>
+
